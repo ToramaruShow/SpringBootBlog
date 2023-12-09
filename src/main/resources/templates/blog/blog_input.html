@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+</head>
+
+<body>
+	<div th:replace="~{/blog/parts/blog_menu::menu_fragment}"></div><!--~{}を付け足した-->
+	<h1 th:text="${title}"></h1>
+	<form th:action="@{/blog/confirm}" th:object="${blog}">
+		<dl>
+			<dt><!--タイトル-->
+				<label for="title">
+					[タイトル]
+				</label>
+			</dt>
+			<dd>
+				<input type="text" th:field="*{title}">
+				<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red"></div>
+			</dd>
+			<dt><!--カテゴリ-->
+				<label for="categoryId">
+					[カテゴリ]
+				</label>
+			</dt>
+			<dd>
+				<select th:field="*{categoryId}">
+				<option th:each="item, stat:${categoryList}" th:value="${stat.index + 1}" th:text="${item}"></option>
+				</select>
+			</dd>
+			<dt><!--内容-->
+				<label for="body">
+					[内容]
+				</label>
+			</dt>
+			<dd>
+				<input type="text" th:field="*{body}">
+				<div th:if="${#fields.hasErrors('body')}" th:errors="*{body}" style="color:red"></div>
+			</dd>
+			<!--				<label for="contents">[内容]-->
+			<!--				</label>-->
+			<!--			</dt>-->
+			<!--			<dd>-->
+			<!--				<textarea rows="5" cols="30" th:filed="*{body}"></textarea>-->
+			<!--			</dd>-->
+		</dl>
+		<p>
+			<button type="submit" name="btn">確認</button>
+		</p>
+	</form>
+	<!--/* PROGRAM COMMENT */-->
+</body>
+
+</html>

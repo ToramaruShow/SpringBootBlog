@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+</head>
+
+<body>
+	<div th:replace="~{/blog/parts/blog_menu::menu_fragment}"></div><!--~{}を付け足した-->
+	<h1 th:text="${title}"></h1>
+	<div th:text="${resultMsg}"></div>
+	<ul>
+		<li th:each="item:${blogList}" th:text="${item}"></li>
+	</ul>
+</body>
+
+</html>
