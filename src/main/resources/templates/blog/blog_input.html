@@ -10,6 +10,7 @@
 	<div th:replace="~{/blog/parts/blog_menu::menu_fragment}"></div><!--~{}を付け足した-->
 	<h1 th:text="${title}"></h1>
 	<form th:action="@{/blog/confirm}" th:object="${blog}">
+		<input type="hidden" th:field="*{id}">
 		<dl>
 			<dt><!--タイトル-->
 				<label for="title">
@@ -27,7 +28,7 @@
 			</dt>
 			<dd>
 				<select th:field="*{categoryId}">
-				<option th:each="item, stat:${categoryList}" th:value="${stat.index + 1}" th:text="${item}"></option>
+				<option th:each="item, stat:${categoryList}" th:value="${stat.index + 1}" th:text="${item}"/><!--</>で省略した-->
 				</select>
 			</dd>
 			<dt><!--内容-->
@@ -36,18 +37,18 @@
 				</label>
 			</dt>
 			<dd>
-				<input type="text" th:field="*{body}">
+				<textarea cols="30" rows="5" th:field="*{body}"></textarea><!--type="text"を警告が出たので消した-->
 				<div th:if="${#fields.hasErrors('body')}" th:errors="*{body}" style="color:red"></div>
 			</dd>
-			<!--				<label for="contents">[内容]-->
-			<!--				</label>-->
-			<!--			</dt>-->
-			<!--			<dd>-->
-			<!--				<textarea rows="5" cols="30" th:filed="*{body}"></textarea>-->
-			<!--			</dd>-->
 		</dl>
 		<p>
-			<button type="submit" name="btn">確認</button>
+			<th:block th:if="*{id==0}">
+				<button type="submit" name="btn" th:value="${btnMode}">登録確認</button>
+			</th:block>
+			<th:block th:if="*{id!=0}">
+				<button type="submit" name="btn" th:value="${btnModeUp}">更新確認</button>
+				<button type="submit" name="btn" th:value="${btnModeDel}">削除確認</button>
+			</th:block>
 		</p>
 	</form>
 	<!--/* PROGRAM COMMENT */-->

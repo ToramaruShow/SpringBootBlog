@@ -33,5 +33,6 @@ public class Blog {
 	private String body;
 	@Column(insertable = false, updatable = false)
 	private String registDate;
+	@Column(insertable = false)
 	private String updateDate;
 }
