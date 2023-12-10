@@ -32,8 +32,8 @@ public class LecBlogCnt {
 
 	@Value("${blog.title}")
 	private String[] title;
-	
-	@Value("#{${blog.io.state}}") 
+
+	@Value("#{${blog.io.state}}")
 	private Map<String, String> ioState;
 
 	@GetMapping("/select")
@@ -51,8 +51,8 @@ public class LecBlogCnt {
 		//カテゴリ
 		model.addAttribute("categoryList", categoryService.getCategoryNameList());
 		//ボタンセット
-		model.addAttribute("btnModeUp",BlogConfig.MODE_UPDATE);
-		model.addAttribute("btnModeDel",BlogConfig.MODE_DELETE);
+		model.addAttribute("btnModeUp", BlogConfig.MODE_UPDATE);
+		model.addAttribute("btnModeDel", BlogConfig.MODE_DELETE);
 		return "/blog/blog_input";
 	}
 
@@ -64,25 +64,25 @@ public class LecBlogCnt {
 		//カテゴリ
 		model.addAttribute("categoryList", categoryService.getCategoryNameList());
 		//ボタンセット
-		model.addAttribute("btnMode",BlogConfig.MODE_REGIST);
+		model.addAttribute("btnMode", BlogConfig.MODE_REGIST);
 		return "/blog/blog_input";
 	}
 
 	@GetMapping("/confirm")
-	public String confirm(@Valid Blog blog, BindingResult result,@RequestParam("btn") String btn, Model model) {
+	public String confirm(@Valid Blog blog, BindingResult result, @RequestParam("btn") String btn, Model model) {
 		if (result.hasErrors()) {
 			//カテゴリを送る
 			model.addAttribute("categoryList", categoryService.getCategoryNameList());
-			if(Objects.equals(btn, BlogConfig.MODE_REGIST)) {
+			if (Objects.equals(btn, BlogConfig.MODE_REGIST)) {
 				//タイトル (INPUTにして)
 				model.addAttribute("title", title[BlogConfig.STATE_INPUT]);
-				return "/blog/blog_input";				
+				return "/blog/blog_input";
 			}
 			model.addAttribute("title", title[BlogConfig.STATE_UPDATE]);
 			return "/blog/blog_input";
 		}
 		//ボタンの状態から処理したい内容を取得
-		model.addAttribute("confirmMsg",ioState.get(btn));
+		model.addAttribute("confirmMsg", ioState.get(btn));
 		//カテゴリー名をセット
 		blog.setCategory(categoryService.getCategoryNameList()[blog.getCategoryId() - 1]);
 		model.addAttribute("title", title[BlogConfig.STATE_CONFIRM]);
@@ -93,29 +93,30 @@ public class LecBlogCnt {
 	}
 
 	@GetMapping("/result")
-	public String handling(@Valid Blog blog, BindingResult result, @RequestParam("btn") String btn, RedirectAttributes reAttributes, 
-			Model model, @Value("${blog.update.msg}") String updateStr, @Value("${blog.update.err}") String updateErr) {
+	public String handling(@Valid Blog blog, BindingResult result, @RequestParam("btn") String btn,
+			RedirectAttributes reAttributes, Model model, @Value("${blog.update.msg}") String updateStr,
+			@Value("${blog.update.err}") String updateErr) {
 		if (result.hasErrors() || Objects.equals(btn, BlogConfig.MODE_PAGE_BACK)) {
 			model.addAttribute("categoryList", categoryService.getCategoryNameList());
-			if(blog.getId() == 0) {
+			if (blog.getId() == 0) {
 				model.addAttribute("title", title[BlogConfig.STATE_INPUT]);
-				model.addAttribute("btnMode",BlogConfig.MODE_REGIST);
+				model.addAttribute("btnMode", BlogConfig.MODE_REGIST);
 				return "/blog/blog_input";
 			}
 			model.addAttribute("title", title[BlogConfig.STATE_UPDATE]);
-			model.addAttribute("btnModeUp",BlogConfig.MODE_UPDATE);
-			model.addAttribute("btnModeDel",BlogConfig.MODE_DELETE);
+			model.addAttribute("btnModeUp", BlogConfig.MODE_UPDATE);
+			model.addAttribute("btnModeDel", BlogConfig.MODE_DELETE);
 			return "/blog/blog_input";
 		}
 		String resultMsg = String.format(updateErr, blog.getTitle(), ioState.get(btn));
 		//登録
 		try {
 			//登録・更新
-			if(Objects.equals(btn, BlogConfig.MODE_REGIST) || Objects.equals(btn, BlogConfig.MODE_UPDATE)) {
+			if (Objects.equals(btn, BlogConfig.MODE_REGIST) || Objects.equals(btn, BlogConfig.MODE_UPDATE)) {
 				blogService.save(blog);
 			}
 			//削除
-			if(Objects.equals(btn, BlogConfig.MODE_DELETE)) {
+			if (Objects.equals(btn, BlogConfig.MODE_DELETE)) {
 				blogService.deleteById(blog.getId());
 			}
 			resultMsg = String.format(updateStr, blog.getTitle(), ioState.get(btn));
@@ -131,7 +132,7 @@ public class LecBlogCnt {
 		//return select(model);
 		return "redirect:/blog/resultShow";
 	}
-	
+
 	@GetMapping("/resultShow")
 	public String resultShow(@ModelAttribute("modelMap") ModelMap modelMap, Model model) {
 		model.addAttribute("resultMsg", modelMap.getAttribute("resultMsg"));
