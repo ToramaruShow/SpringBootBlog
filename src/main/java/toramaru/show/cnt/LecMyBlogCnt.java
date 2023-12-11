@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LecMyBlogCnt {
 
-	@GetMapping("/")
+	@GetMapping("/menu")
 	public String select(Model model) {
 		return "/menu";
 	}

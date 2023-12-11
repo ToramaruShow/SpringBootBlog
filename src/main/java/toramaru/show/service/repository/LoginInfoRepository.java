@@ -18,5 +18,9 @@ public interface LoginInfoRepository extends JpaRepository<LoginInfo, LoginInfoK
 	//ユーザーID検索
 	@Query(value = "select count(*) from blog_login_info"
 			+ "\nwhere email= :email", nativeQuery = true)
-	public int isResultUserEmail(@Param("email") String user_email);
+	public int isResultUserEmail(@Param("email") String email);
+
+	@Query(value = "select user_id from blog_login_info"
+			+ "\nwhere email= :email and passwd= :passwd", nativeQuery = true)
+	public String findUser(@Param("email") String email, @Param("passwd") String passwd);
 }

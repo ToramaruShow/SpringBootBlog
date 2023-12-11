@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${title}"></title>
+</head>
+
+<body>
+	<h1 th:text="${title}"></h1>
+	<div th:if="${session != null}">
+		<span th:text="${' [ログインユーザ] ' + session.userInfo + 'さん'}" style="padding-right: 50px"></span>
+		<a th:href="@{/logout}">ログアウト</a>
+	</div>
+	<div th:text="${session.userInfo + 'さん'}"></div>
+	<div th:if="${resultMsg != null}" th:text="${resultMsg}"></div>
+	<hr>
+	<p><a th:href="@{/blog/select}">ブログ一覧</a></p>
+	<p><a th:href="@{/blog/input}">ブログ登録</a></p>
+	<hr>
+	<p><a th:href="@{/blog/category/regist}">カテゴリ管理</a></p>
+	<hr>
+	<p><a th:href="@{/user/cancel}">退会</a></p>
+</body>
+
+</html>

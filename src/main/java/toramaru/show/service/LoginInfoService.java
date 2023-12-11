@@ -18,6 +18,7 @@ public class LoginInfoService {
 		}
 		return true;
 	}
+
 	//ユーザーID重複してるか？
 	public boolean isRegistUserEmail(String email) {
 		if (repository.isResultUserEmail(email) == 0) {
@@ -25,8 +26,12 @@ public class LoginInfoService {
 		}
 		return true;
 	}
-	
-	public LoginInfo save(LoginInfo logininfo) {
-		return repository.save(logininfo);
+
+	public LoginInfo save(LoginInfo loginInfo) {
+		return repository.save(loginInfo);
+	}
+
+	public String findUser(LoginInfo loginInfo) {
+		return repository.findUser(loginInfo.getEmail(), loginInfo.getPasswd());
 	}
 }
