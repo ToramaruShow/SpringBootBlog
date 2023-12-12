@@ -1,5 +1,6 @@
 package toramaru.show.cnt;
 
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import toramaru.show.model.BlogConfig;
 import toramaru.show.model.user.LoginInfo;
+import toramaru.show.model.user.LoginInfoKey;
 import toramaru.show.service.LoginInfoService;
 
 @Controller
@@ -38,9 +40,13 @@ public class UserCnt {
 
 	@GetMapping("")
 	public String top() {
+		//セッション情報がない場合はログイン画面へ
+		if (Objects.isNull(session.getAttribute(BlogConfig.SESSION_LOGIN_INFO))) {
+			return "redirect:/";
+		}
 		return "/user/user_top";
 	}
-	
+
 	//ユーザ登録情報　入力の検査
 	@GetMapping("/input")
 	public String input(Model model) {
@@ -71,7 +77,7 @@ public class UserCnt {
 		//登録
 		String resultMsg = resource.getString("user.regist.err");
 		try {
-			//			service.save(loginInfo);//ここをコメントにすると登録されない
+			service.save(loginInfo);//ここをコメントにすると登録されない
 			resultMsg = resource.getString("user.regist");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,5 +85,24 @@ public class UserCnt {
 		model.addAttribute("title", title[BlogConfig.STATE_RESULT]);
 		model.addAttribute("resultMsg", resultMsg);
 		return "user/user_result";
+	}
+
+	@GetMapping("/cancel")
+	public String cancel(Model model) {
+		if (Objects.isNull(session.getAttribute(BlogConfig.SESSION_LOGIN_INFO))) {
+			return "redirect:/";
+		}
+		LoginInfoKey sessionUser = (LoginInfoKey) session.getAttribute(BlogConfig.SESSION_LOGIN_INFO);
+		String resultMsg = resource.getString("user.cancel.err");
+		try {
+			service.delete(sessionUser);//DBから削除
+			resultMsg = resource.getString("user.cancel");
+		} catch (Exception e) {
+		}
+		//セッション破棄
+		session.invalidate();
+		model.addAttribute("title", title[BlogConfig.STATE_RESULT]);
+		model.addAttribute("resultMsg", resultMsg);
+		return "/user/user_result";
 	}
 }

@@ -8,11 +8,11 @@
 
 <body>
 	<h1 th:text="${title}"></h1>
-	<div th:if="${session != null}">
-		<span th:text="${' [ログインユーザ] ' + session.userInfo + 'さん'}" style="padding-right: 50px"></span>
+	<div th:if="${session.loginInfo != null}">
+		<span th:text="${' [ログインユーザ] ' + session.loginInfo.userId + 'さん'}" style="padding-right: 50px"></span>
 		<a th:href="@{/logout}">ログアウト</a>
 	</div>
-	<div th:text="${session.userInfo + 'さん'}"></div>
+	<div th:text="${session.userInfo.userId + 'さん'}"></div>
 	<div th:if="${resultMsg != null}" th:text="${resultMsg}"></div>
 	<hr>
 	<p><a th:href="@{/blog/select}">ブログ一覧</a></p>

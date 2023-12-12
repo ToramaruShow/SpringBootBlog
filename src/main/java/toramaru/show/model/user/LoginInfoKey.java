@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class LoginInfoKey implements Serializable{
 	private String userId;
 	private String email;
-}
+}//主キーは２個！
+

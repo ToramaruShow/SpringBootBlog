@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import toramaru.show.model.BlogConfig;
 import toramaru.show.model.user.LoginInfo;
+import toramaru.show.model.user.LoginInfoKey;
 import toramaru.show.service.LoginInfoService;
 
 @Controller
@@ -43,16 +45,22 @@ public class LoginCnt {
 			}
 		}
 		//DBチェック
-		String user_id = service.findUser(loginInfo);
+		String user_id = service.findUser(loginInfo);//finduserで名前だけ取ってくる email情報付き？？
 		if (Objects.isNull(user_id)) {
 			model.addAttribute("checkMsgLogin", loginErr);
 			model.addAttribute("title", title[0]);
 			return "/login/blog_login";
 		}
 		//セッション
-		session.setAttribute("userInfo", user_id);
+		session.setAttribute(BlogConfig.SESSION_LOGIN_INFO, new LoginInfoKey(user_id,loginInfo.getEmail()));//おぶじぇくと
 //		model.addAttribute("userInfo", user_id);
 		return "redirect:/user";//リダイレクトでURLの後ろにある情報を消す
+	}
+	
+	@GetMapping("/logout")
+	public String logput() {
+		session.invalidate();//セッションをすべて破棄する 
+		return "redirect:/";
 	}
 }
 //		//		model.addAttribute("loginInfo",loginInfo); 必要かは不明
