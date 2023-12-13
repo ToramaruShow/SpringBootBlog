@@ -1,6 +1,5 @@
 package toramaru.show.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +17,12 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository repository;
 	@Getter
-	private String[] categoryNameList;
+	private List<Category> categoryNameList;
 
 	@PostConstruct
 	private void init() {
-		setCaterogyNameList();
+		//setCaterogyNameList();
+		categoryNameList = findAll();
 	}
 
 	public List<Category> findAll() {
@@ -49,8 +49,8 @@ public class CategoryService {
 	
 
 	private void setCaterogyNameList() {
-		var categoryName = new ArrayList<String>();
+		/*var categoryName = new ArrayList<String>();
 		findAll().forEach(item -> categoryName.add(item.getName()));//itemにひとつづつ入れる
-		categoryNameList = categoryName.toArray(new String[] {});
+		categoryNameList = categoryName.toArray(new String[] {});*/
 	}
 }

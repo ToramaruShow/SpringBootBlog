@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import toramaru.show.model.Blog;
 import toramaru.show.model.BlogConfig;
+import toramaru.show.model.Category;
 import toramaru.show.service.BlogService;
 import toramaru.show.service.CategoryService;
 
@@ -76,6 +77,7 @@ public class LecBlogCnt {
 			if (Objects.equals(btn, BlogConfig.MODE_REGIST)) {
 				//タイトル (INPUTにして)
 				model.addAttribute("title", title[BlogConfig.STATE_INPUT]);
+				model.addAttribute("btnMode",BlogConfig.MODE_REGIST); //ここ忘れてる
 				return "/blog/blog_input";
 			}
 			model.addAttribute("title", title[BlogConfig.STATE_UPDATE]);
@@ -84,7 +86,10 @@ public class LecBlogCnt {
 		//ボタンの状態から処理したい内容を取得
 		model.addAttribute("confirmMsg", ioState.get(btn));
 		//カテゴリー名をセット
-		blog.setCategory(categoryService.getCategoryNameList()[blog.getCategoryId() - 1]);
+//		blog.setCategory(categoryService.getCategoryNameList()[blog.getCategoryId() - 1]);
+		Category category =categoryService.getCategoryNameList().stream().filter(
+				item->item.getId()==blog.getCategoryId()).findFirst().orElse(null);
+		blog.setCategory(category.getName());
 		model.addAttribute("title", title[BlogConfig.STATE_CONFIRM]);
 		//ボタンセット
 		model.addAttribute("btnBack", BlogConfig.MODE_PAGE_BACK);
