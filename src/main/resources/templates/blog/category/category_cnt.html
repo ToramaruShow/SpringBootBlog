@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 
-<head>
+<head th:if="${session.loginInfo != null}">
 	<meta charset="UTF-8">
 	<title th:text="${categorytitle}"></title>
 </head>
 
-<body>
+<body th:if="${session.loginInfo != null}">
 	<div th:replace="~{/blog/parts/blog_menu::menu_fragment}"></div><!--~{}を付け足した-->
 	<h1 th:text="${categorytitle}"></h1>
 	<div style="border: solid 1px #000 ; height: 100px ; overflow-y: scroll;">
@@ -17,15 +17,14 @@
 				<th>DESCRIPTION</th>
 			</tr>
 			<tr th:each="item:${blogList}"><!--イメージとしては Pythonのfor item in blogList-->
-				<td><a th:href="@{/blog/cate/search(id=${item.id})}" th:text="${item.id}"></a></td>
-				<td><a th:href="@{/blog/cate/search(id=${item.id})}" th:text="${item.name}"></a></td>
-				<td><a th:href="@{/blog/cate/search(id=${item.id})}" th:text="${item.description}"></a></td>
+				<td><a th:href="@{/blog/cate/search(id=${item.id},btn=${item.id})}" th:text="${item.id}"></a></td>
+				<td><a th:href="@{/blog/cate/search(id=${item.id},btn=${item.id})}" th:text="${item.name}"></a></td>
+				<td><a th:href="@{/blog/cate/search(id=${item.id},btn=${item.id})}" th:text="${item.description}"></a></td>
 				<!--forでitemへ順に格納されるので、ここはprint(item)って感じ-->
 			</tr>
 		</table>
 	</div>
 	<br><!--入力フォーム-->
-	<hr>
 	<div th:if="${resultMsg!=null}" th:text="${resultMsg}"></div>
 	<form th:if="${!confirm}" th:action="@{/blog/cate/confirm}" th:object="${category}">
 		<input type="hidden" th:field="*{id}">
@@ -115,13 +114,12 @@
 	</form>
 	<form th:if="${!confirm}" th:object="${category}">	
 		<input th:if="${!confirm}" type="hidden" th:field="*{id}">
-		<input th:if="${!confirm}" type="hidden" th:field="*{name}">
-		<input th:if="${!confirm}" type="hidden" th:field="*{description}">
 		<th:block th:action="@{/blog/cate}">
 			<button type="submit" name="btn" th:value="${btnClear}" 
 			onclick="return confirm('入力をクリアしてもよろしいですか？')">Clear</button>
 		</th:block>
 	</form>
+	
 
 </body>
 

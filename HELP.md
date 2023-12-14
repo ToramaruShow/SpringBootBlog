@@ -19,6 +19,7 @@ This is the URL that can be used at the moment.
 * [user/regist](http://localhost:8080/MyBlog/user/regist)
 * [user/cancel](http://localhost:8080/MyBlog/user/cancel)
 * [[LOGIN]](http://localhost:8080/MyBlog)
+* [[USER PAGE]](http://localhost:8080/MyBlog/user)
 * [[LOGOUT -> Redirect -> LOGIN]](http://localhost:8080/MyBlog/logout)
 * [user/info](http://localhost:8080/MyBlog/user/info)
 * [test/cate](http://localhost:8080/MyBlog/test/cate)

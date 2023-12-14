@@ -13,6 +13,7 @@ public interface BlogConfig {
 	public static final String MODE_REGIST="regist";
 	public static final String MODE_UPDATE="update";
 	public static final String MODE_DELETE="delete";
+	public static final String MODE_CLEAR="clear";
 	
 	public static final String SESSION_LOGIN_INFO="loginInfo";
 }
